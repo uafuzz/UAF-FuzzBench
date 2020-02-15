@@ -1,0 +1,37 @@
+- Reproduce: `valgrind ./mjs -f PoC`
+~~~
+==6243== Invalid read of size 1
+==6243==    at 0x4030F40: memcpy (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==6243==    by 0x806219E: embed_string (mjs.c:14085)
+==6243==    by 0x8060F62: mjs_mk_string (mjs.c:13657)
+==6243==    by 0x805B9C1: mjs_set_internal (mjs.c:12257)
+==6243==    by 0x805B86B: mjs_set (mjs.c:12212)
+==6243==    by 0x805AB5D: frozen_cb (mjs.c:11894)
+==6243==    by 0x804B37A: parse_array (mjs.c:5928)
+==6243==    by 0x804B7CC: parse_value (mjs.c:5980)
+==6243==    by 0x804B9EC: parse_pair (mjs.c:6037)
+==6243==    by 0x804BB1E: parse_object (mjs.c:6049)
+==6243==    by 0x804B7A9: parse_value (mjs.c:5977)
+==6243==    by 0x804BC9C: doit (mjs.c:6062)
+==6243==  Address 0x422479c is 92 bytes inside a block of size 329 free'd
+==6243==    at 0x402E2CC: realloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==6243==    by 0x80492D2: mbuf_resize (mjs.c:4925)
+==6243==    by 0x8060F44: mjs_mk_string (mjs.c:13655)
+==6243==    by 0x805B9C1: mjs_set_internal (mjs.c:12257)
+==6243==    by 0x805B86B: mjs_set (mjs.c:12212)
+==6243==    by 0x805AB5D: frozen_cb (mjs.c:11894)
+==6243==    by 0x804B37A: parse_array (mjs.c:5928)
+==6243==    by 0x804B7CC: parse_value (mjs.c:5980)
+==6243==    by 0x804B9EC: parse_pair (mjs.c:6037)
+==6243==    by 0x804BB1E: parse_object (mjs.c:6049)
+==6243==    by 0x804B7A9: parse_value (mjs.c:5977)
+==6243==    by 0x804BC9C: doit (mjs.c:6062)
+==6243==  Block was alloc'd at
+==6243==    at 0x402E2CC: realloc (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==6243==    by 0x80492D2: mbuf_resize (mjs.c:4925)
+==6243==    by 0x8060F44: mjs_mk_string (mjs.c:13655)
+==6243==    by 0x805574D: mjs_execute (mjs.c:9397)
+==6243==    by 0x8056628: mjs_exec_internal (mjs.c:9737)
+==6243==    by 0x8056715: mjs_exec_file (mjs.c:9760)
+==6243==    by 0x805B0FE: main (mjs.c:12030)
+~~~
